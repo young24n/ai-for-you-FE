@@ -2,7 +2,11 @@ import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { useChatRuntime, AssistantChatTransport } from "@assistant-ui/react-ai-sdk";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Thread } from "@/components/thread";
-import { MenuIcon, PlusIcon, SparklesIcon, MessageSquareIcon } from "lucide-react";
+import { MenuIcon, SparklesIcon, KeyIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import SidebarContent from "@/components/SidebarContent"; // SidebarContent 임포트
 
 function App() {
   const runtime = useChatRuntime({
@@ -14,35 +18,35 @@ function App() {
   return (
     <AssistantRuntimeProvider runtime={runtime}>
       <TooltipProvider>
-        <div className="flex h-screen w-full bg-white dark:bg-[#131314] text-[#1f1f1f] dark:text-[#e3e3e3] antialiased overflow-hidden font-sans">
+        <div className="flex h-screen w-full bg-background text-foreground antialiased overflow-hidden font-sans">
           
-          {/* 사이드바 */}
-          <aside className="hidden md:flex w-[280px] flex-col bg-[#f0f4f9] dark:bg-[#1e1f20] transition-colors p-4">
-            <button className="flex w-full items-center gap-2 rounded-full bg-white dark:bg-[#131314] px-4 py-3 text-sm font-medium shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-              <PlusIcon className="size-5 text-gray-500" />
-              새 채팅
-            </button>
-            
-            <div className="mt-8 flex-1 overflow-y-auto">
-              <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 px-2">최근</div>
-              <button className="flex items-center gap-3 w-full rounded-full px-3 py-2.5 text-sm hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer text-left">
-                <MessageSquareIcon className="size-4 shrink-0 text-gray-400" />
-                <span className="truncate">React 컴포넌트 질문</span>
-              </button>
-            </div>
+          {/* 데스크탑 전용 기본 사이드바 */}
+          <aside className="hidden md:flex w-[280px] flex-col shrink-0 border-r border-border">
+            <SidebarContent />
           </aside>
 
           {/* 메인 챗 영역 */}
-          <main className="flex flex-1 flex-col h-full bg-white dark:bg-[#131314] overflow-hidden">
+          <main className="flex flex-1 flex-col h-full overflow-hidden">
             {/* 상단 헤더 */}
-            <header className="flex h-16 items-center justify-between px-4 lg:px-6 shrink-0">
+            <header className="flex h-16 items-center justify-between px-4 lg:px-6 shrink-0 border-b border-border/40">
               <div className="flex items-center gap-3">
-                <button className="md:hidden p-2 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-gray-600 dark:text-gray-300">
+                {/* 모바일 화면용 드로어(Sheet) 사이드바 */}
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" className="md:hidden -ml-2 rounded-full">
                   <MenuIcon className="size-5" />
-                </button>
-                <button className="flex items-center gap-2 text-lg font-medium tracking-tight bg-transparent hover:bg-black/5 dark:hover:bg-white/5 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+                      <span className="sr-only">메뉴 열기</span>
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[280px] p-0 border-r-0">
+                    <SheetTitle className="sr-only">사이드바 메뉴</SheetTitle>
+                    <SidebarContent />
+                  </SheetContent>
+                </Sheet>
+
+                <Button variant="ghost" className="text-lg font-medium tracking-tight gap-2 px-3 py-1.5 rounded-lg hidden sm:flex">
                   Gemini <SparklesIcon className="size-4 text-blue-500" />
-                </button>
+                </Button>
               </div>
               <div className="size-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold cursor-pointer">
                 U
