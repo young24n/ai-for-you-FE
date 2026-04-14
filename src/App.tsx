@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AssistantRuntimeProvider } from "@assistant-ui/react";
 import { useChatRuntime, AssistantChatTransport } from "@assistant-ui/react-ai-sdk";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,9 +10,13 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import SidebarContent from "@/components/SidebarContent"; // SidebarContent 임포트
 
 function App() {
+  const [apiKey, setApiKey] = useState("");
+  const [tempKey, setTempKey] = useState("");
+
   const runtime = useChatRuntime({
     transport: new AssistantChatTransport({
       api: "http://localhost:8080/sendMessage",
+      headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : undefined,
     }),
   });
 
@@ -34,7 +39,7 @@ function App() {
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button variant="ghost" size="icon" className="md:hidden -ml-2 rounded-full">
-                  <MenuIcon className="size-5" />
+                      <MenuIcon className="size-5" />
                       <span className="sr-only">메뉴 열기</span>
                     </Button>
                   </SheetTrigger>
@@ -48,8 +53,27 @@ function App() {
                   Gemini <SparklesIcon className="size-4 text-blue-500" />
                 </Button>
               </div>
-              <div className="size-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold cursor-pointer">
-                U
+
+              {/* API 키 입력 공간 */}
+              <div className="flex items-center gap-2">
+                <div className="relative flex items-center">
+                  <KeyIcon className="absolute left-2.5 size-4 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    placeholder="API Key 입력..."
+                    value={tempKey}
+                    onChange={(e) => setTempKey(e.target.value)}
+                    className="h-9 w-[160px] sm:w-[200px] lg:w-[240px] pl-9"
+                  />
+                </div>
+                <Button 
+                  onClick={() => setApiKey(tempKey)}
+                  variant={apiKey === tempKey && apiKey !== "" ? "secondary" : "default"}
+                  size="sm"
+                  className="h-9"
+                >
+                  저장
+                </Button>
               </div>
             </header>
 
