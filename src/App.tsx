@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import SidebarContent from "@/components/SidebarContent"; // SidebarContent 임포트
 import { Toaster, toast } from "sonner"; // Sonner 추가
 import axios from "axios";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 function App() {
   const [apiKey, setApiKey] = useState("");
@@ -65,7 +66,7 @@ function App() {
   const runtime = useChatRuntime({
     transport: new AssistantChatTransport({
       api: "http://localhost:8080/sendMessage",
-      headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : undefined,
+      headers: apiKey ? { Authorization: `${apiKey}` } : undefined,
     }),
   });
 
@@ -100,9 +101,16 @@ function App() {
                     </SheetContent>
                   </Sheet>
 
-                  <Button variant="ghost" className="text-lg font-medium tracking-tight gap-2 px-3 py-1.5 rounded-lg hidden sm:flex">
-                    Gemini <SparklesIcon className="size-4 text-blue-500" />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" className="text-lg font-medium tracking-tight gap-2 px-3 py-1.5 rounded-lg hidden sm:flex">
+                        GPT-4o <SparklesIcon className="size-4 text-blue-500" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <span>죄송합니다 현재 할당량 초과로 해당 모델만 지원하고 있습니다.</span>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
 
                 {/* API 키 입력 공간 */}
