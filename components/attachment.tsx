@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useEffect, useState, type FC } from "react";
+import { type PropsWithChildren, useEffect, useState, type FC, useMemo } from "react";
 import { XIcon, PlusIcon, FileText } from "lucide-react";
 import {
   AttachmentPrimitive,
@@ -26,21 +26,18 @@ import { TooltipIconButton } from "@/components/tooltip-icon-button";
 import { cn } from "@/lib/utils";
 
 const useFileSrc = (file: File | undefined) => {
-  const [src, setSrc] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    if (!file) {
-      setSrc(undefined);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(file);
-    setSrc(objectUrl);
-
-    return () => {
-      URL.revokeObjectURL(objectUrl);
-    };
+  // 1. file이 바뀔 때만 objectUrl을 생성합니다. (State 제거)
+  const src = useMemo(() => {
+    if (!file) return undefined;
+    return URL.createObjectURL(file);
   }, [file]);
+
+  // 2. 이펙트에서는 오직 '정리(Cleanup)' 작업만 담당합니다.
+  useEffect(() => {
+    return () => {
+      if (src) URL.revokeObjectURL(src);
+    };
+  }, [src]); // src가 바뀔 때(즉, file이 바뀔 때) 이전 URL을 폐기함
 
   return src;
 };
