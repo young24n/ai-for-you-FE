@@ -60,7 +60,7 @@ function App() {
         toast.error("알 수 없는 오류가 발생했습니다.");
       }
     } finally {
-      setIsValidating(false); // 검증 종료
+      setIsValidating(false);
     }
   };
 
