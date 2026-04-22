@@ -66,7 +66,7 @@ function App() {
 
   const runtime = useChatRuntime({
     transport: new AssistantChatTransport({
-      api: `${BACKEND_URL}/sendMessage`,
+      api: `https://api.whataiforu.uk/sendMessage`,
       headers: apiKey ? { Authorization: `${apiKey}` } : undefined,
     }),
   });
