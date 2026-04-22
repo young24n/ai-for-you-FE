@@ -11,6 +11,7 @@ import SidebarContent from "@/components/SidebarContent"; // SidebarContent 임�
 import { Toaster, toast } from "sonner"; // Sonner 추가
 import axios from "axios";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { BACKEND_URL } from "./constants";
 
 function App() {
   const [apiKey, setApiKey] = useState("");
@@ -29,7 +30,7 @@ function App() {
   const handleSaveApiKey = async () => {
     setIsValidating(true); // 검증 시작
     try {
-      const response = await axios.post("http://localhost:8080/validateApiKey", {
+      const response = await axios.post(`${BACKEND_URL}/validateApiKey`, {
         apiKey: tempKey,
       });
 
@@ -65,7 +66,7 @@ function App() {
 
   const runtime = useChatRuntime({
     transport: new AssistantChatTransport({
-      api: "http://localhost:8080/sendMessage",
+      api: "${BACKEND_URL}/sendMessage",
       headers: apiKey ? { Authorization: `${apiKey}` } : undefined,
     }),
   });
