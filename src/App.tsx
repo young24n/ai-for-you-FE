@@ -109,11 +109,11 @@ function App() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant="ghost" className="text-lg font-medium tracking-tight gap-2 px-3 py-1.5 rounded-lg hidden sm:flex">
-                        GPT-4o <SparklesIcon className="size-4 text-blue-500" />
+                        Gemini 3.1 <SparklesIcon className="size-4 text-blue-500" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <span>죄송합니다 현재 할당량 초과로 해당 모델만 지원하고 있습니다.</span>
+                      <span>해당 모델만 지원하고 있습니다.</span>
                     </TooltipContent>
                   </Tooltip>
                 </div>
