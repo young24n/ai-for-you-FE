@@ -69,6 +69,10 @@ function App() {
       api: `https://api.whataiforu.uk/sendMessage`,
       headers: apiKey ? { Authorization: `${apiKey}` } : undefined,
     }),
+    onError: (error) => {
+      // runtime에서 발생한 에러를 toast로 표시
+      toast.error(`Runtime Error: ${error.message || "알 수 없는 오류"}`);
+    },
   });
 
   return (
