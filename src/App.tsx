@@ -46,6 +46,11 @@ function App() {
 
   // 3. 채팅방 선택 함수 (GET /getMessages)
   const handleSelectRoom = async (roomId: string) => {
+    // 이미 선택된 채팅방이면 스킵
+    if (currentRoomId === roomId) {
+      return; 
+    }
+
     try {
       const response = await axios.get(`${BACKEND_URL}/getMessages?roomId=${roomId}`, {
         headers: { Authorization: apiKey }
